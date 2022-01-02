@@ -13,30 +13,60 @@ df = pd.read_csv('./prog_book.csv')
 # Create table columns 
 table_columns = df[["Rating", "Reviews", "Book_title", "Number_Of_Pages", "Type", "Price"]]
 
-app.layout = html.Div([
-    # Create our dropdown menu 
-    dcc.Dropdown(
-        id='my-dropdown',
-        options=[
-            {'label': 'Rating', 'value': 'Rating'},
-            {'label': 'Pages', 'value': 'Number_Of_Pages'},
-            {'label': 'Price', 'value': 'Price'}
-        ],
-        value='Rating'
-    ),
+app.layout = html.Div(
+    children=[
+        # Title Section
+        html.Div(
+            children=[html.H1('Top 270 Computer Science & Programming Books')],
+            style={
+                "margin": "0",
+                "display": "flex",
+                "justify-content": "center"
+            }
+        ),
     
-    # Create our Graph 
-    dcc.Graph(
-        id='my-graph',
-    ),
+        # Create our dropdown menu 
+        dcc.Dropdown(
+            id='my-dropdown',
+            options=[
+                {'label': 'Rating', 'value': 'Rating'},
+                {'label': 'Pages', 'value': 'Number_Of_Pages'},
+                {'label': 'Price', 'value': 'Price'}
+            ],
+            value='Rating',
+            style={
+                "width": "100%"
+            }
+        ),
     
-    html.Div(
-        dash_table.DataTable(
-            columns=[{"name": i, "id": i} for i in table_columns],
-            data=df.to_dict('records'),
-            page_size=10)
-    )
-])
+        # Create our Graph 
+        dcc.Graph(
+            id='my-graph',
+            style={
+                "width": "100%"
+            }
+        ),
+        
+        html.Div(
+            dash_table.DataTable(
+                columns=[{"name": i, "id": i} for i in table_columns],
+                data=df.to_dict('records'),
+                page_size=10),
+            style={
+                "width": "100%"
+            }
+        )
+    ], 
+    
+    # Wrapper Div Styles 
+    style={
+        "margin": "0",
+        "width": "100%",
+        "display": "flex",
+        "justify-content": "center",
+        "flex-wrap": "wrap"
+    }
+)
 
 # Create our graph 
 @app.callback(
